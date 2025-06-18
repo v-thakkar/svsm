@@ -691,7 +691,9 @@ impl GHCB {
         self.clear();
         let exit_info_1: u64 = 1 | (vmpl & 0xf) << 16 | apic_id << 32;
         let exit_info_2: u64 = vmsa_gpa.into();
+        log::info!("Reached ap_create check for {sev_features}");
         self.set_rax_valid(sev_features);
+        log::info!("Checked sev_features , now printing vmgexit code");
         self.vmgexit(GHCBExitCode::AP_CREATE, exit_info_1, exit_info_2)?;
         Ok(())
     }

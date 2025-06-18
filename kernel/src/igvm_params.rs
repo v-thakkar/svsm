@@ -427,6 +427,7 @@ impl IgvmParams<'_> {
     }
 
     pub fn use_alternate_injection(&self) -> bool {
+        log::info!("Entered use_alternate_injection function");
         self.igvm_param_block.use_alternate_injection != 0
     }
 

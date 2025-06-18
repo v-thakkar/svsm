@@ -289,6 +289,7 @@ impl SvsmPlatform for SnpPlatform {
     }
 
     fn configure_alternate_injection(&mut self, alt_inj_requested: bool) -> Result<(), SvsmError> {
+        log::info!("entered configure_alternate_injection");
         if !alt_inj_requested {
             return Ok(());
         }

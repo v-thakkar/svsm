@@ -171,6 +171,7 @@ pub fn init_guest_vmsa(v: &mut VMSA, rip: u64, alternate_injection: bool) {
 
     // Enable alternate injection if requested.
     if alternate_injection {
+        log::info!("Alternate injection is requested");
         sev_status.insert(SEVStatusFlags::ALT_INJ);
     }
 
