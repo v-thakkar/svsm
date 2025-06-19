@@ -104,6 +104,13 @@ pub fn init_svsm_vmsa(vmsa: &mut VMSA, vtom: u64, context: &hyperv::HvInitialVpC
     vmsa.vtom = vtom;
 
     vmsa.sev_features = sev_flags().as_sev_features();
+    let sev_feats = vmsa.sev_features;
+    log::info!(
+        "SVSM: BSP sev_features = {:#x}  (REST_INJ={}, ALT_INJ={})",
+        sev_feats,
+        (sev_feats & (1 << 3)) != 0,
+        (sev_feats & (1 << 4)) != 0
+    );
 }
 
 fn real_mode_code_segment(rip: u64) -> VMSASegment {

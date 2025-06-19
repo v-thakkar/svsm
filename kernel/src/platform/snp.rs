@@ -361,6 +361,12 @@ impl SvsmPlatform for SnpPlatform {
     fn start_cpu(&self, cpu: &PerCpu, start_rip: u64) -> Result<(), SvsmError> {
         let (vmsa_pa, sev_features) = cpu.alloc_svsm_vmsa(*VTOM as u64, start_rip)?;
 
+        log::info!(
+            "SVSM: AP create → sev_features = {:#x}  (REST_INJ={}, ALT_INJ={})",
+            sev_features,
+            (sev_features & (1 << 3)) != 0,
+            (sev_features & (1 << 4)) != 0
+        );
         current_ghcb().ap_create(vmsa_pa, cpu.get_apic_id().into(), 0, sev_features)
     }
 
