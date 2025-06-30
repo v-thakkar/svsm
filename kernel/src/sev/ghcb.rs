@@ -698,7 +698,10 @@ impl GHCB {
         } else {
             log::warn!("GHCB RAX is not marked valid when we tried to log it");
         }
-        log::info!("Checked sev_features , now printing vmgexit code");
+        log::info!(
+            "Checked sev_features in ap_create, sev_features = {:#x}",
+            sev_features
+        );
         self.vmgexit(GHCBExitCode::AP_CREATE, exit_info_1, exit_info_2)?;
         Ok(())
     }
