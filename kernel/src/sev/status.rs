@@ -157,7 +157,8 @@ pub fn sev_status_verify() {
         | SEVStatusFlags::REST_INJ
         | SEVStatusFlags::PREV_HOST_IBS
         | SEVStatusFlags::BTB_ISOLATION
-        | SEVStatusFlags::SMT_PROT;
+        | SEVStatusFlags::SMT_PROT
+        | SEVStatusFlags::SECURE_TSC;
 
     let status = sev_flags();
     let required_check = status & required;

@@ -8,6 +8,7 @@ pub mod ghcb;
 pub mod hv_doorbell;
 pub mod msr_protocol;
 pub mod secrets_page;
+pub mod secure_tsc;
 pub mod snp_apic;
 pub mod status;
 pub mod tlb;

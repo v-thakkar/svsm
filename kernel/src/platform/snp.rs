@@ -30,6 +30,7 @@ use crate::sev::msr_protocol::{
 use crate::sev::status::vtom_enabled;
 use crate::sev::tlb::flush_tlb_scope;
 use crate::sev::GHCB_APIC_ACCESSOR;
+use crate::sev::SECURE_TSC_ACCESSOR;
 use crate::sev::{
     init_hypervisor_ghcb_features, pvalidate_range, sev_status_init, sev_status_verify, PvalidateOp,
 };
@@ -121,6 +122,7 @@ impl SvsmPlatform for SnpPlatform {
             GHCB_APIC_ACCESSOR.set_use_restr_inj(true);
             this_cpu().setup_hv_doorbell()?;
         }
+
         guest_request_driver_init();
         Ok(())
     }
