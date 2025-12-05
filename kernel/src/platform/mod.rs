@@ -237,6 +237,17 @@ pub trait SvsmPlatform: Sync {
     /// interrupt.
     fn is_external_interrupt(&self, vector: usize) -> bool;
 
+    /// Configures the use of Secure TSC as requested.
+    /// Default implementation returns NotSupported if SecureTSC is requested,
+    /// as it's an SEV-SNP specific feature.
+    fn configure_secure_tsc(&mut self, secure_tsc_requested: bool) -> Result<(), SvsmError> {
+        if secure_tsc_requested {
+            Err(SvsmError::NotSupported)
+        } else {
+            Ok(())
+        }
+    }
+
     /// Start an additional processor.
     fn start_cpu(&self, cpu: &PerCpu, start_rip: u64) -> Result<(), SvsmError>;
 

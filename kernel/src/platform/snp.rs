@@ -30,8 +30,11 @@ use crate::sev::hv_doorbell::HVDoorbell;
 use crate::sev::msr_protocol::{
     GHCBHvFeatures, hypervisor_ghcb_features, request_termination_msr, verify_ghcb_version,
 };
-use crate::sev::status::vtom_enabled;
+use crate::sev::secrets_page::secrets_page;
+use crate::sev::secure_tsc::TscAccess;
+use crate::sev::status::{sev_flags, vtom_enabled, SEVStatusFlags};
 use crate::sev::tlb::flush_tlb_scope;
+use crate::sev::SECURE_TSC_ACCESSOR;
 use crate::sev::{
     GHCB_APIC_ACCESSOR, PvalidateOp, init_hypervisor_ghcb_features, pvalidate_range,
     sev_status_init, sev_status_verify,
@@ -148,6 +151,7 @@ impl SvsmPlatform for SnpPlatform {
             GHCB_APIC_ACCESSOR.set_use_restr_inj(true);
             this_cpu().setup_hv_doorbell()?;
         }
+
         guest_request_driver_init();
         Ok(())
     }
@@ -399,7 +403,31 @@ impl SvsmPlatform for SnpPlatform {
         // external interrupts.
         false
     }
+    fn configure_secure_tsc(&mut self, secure_tsc_requested: bool) -> Result<(), SvsmError> {
+        if !secure_tsc_requested {
+            return Ok(());
+        }
 
+        if !sev_flags().contains(SEVStatusFlags::SECURE_TSC) {
+            return Err(SvsmError::NotSupported);
+        }
+
+        SECURE_TSC_ACCESSOR.set_use_secure_tsc(true);
+
+        let base = SECURE_TSC_ACCESSOR.read_tsc_frequency();
+        if base == 0 {
+            return Err(SvsmError::NotSupported);
+        }
+
+        if let Some(secrets) = secrets_page() {
+            let factor = secrets.tsc_factor();
+            if factor == 0 {
+                return Err(SvsmError::NotSupported);
+            }
+        }
+
+        Ok(())
+    }
     fn start_cpu(&self, cpu: &PerCpu, start_rip: u64) -> Result<(), SvsmError> {
         let (vmsa_pa, sev_features) = cpu.alloc_svsm_vmsa(*VTOM as u64, start_rip)?;
 

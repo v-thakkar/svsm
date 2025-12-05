@@ -623,6 +623,7 @@ pub extern "C" fn stage2_main(launch_info: &Stage2LaunchInfo) -> ! {
         vtom: launch_info.vtom,
         debug_serial_port: config.debug_serial_port(),
         use_alternate_injection: config.use_alternate_injection(),
+        use_secure_tsc: config.use_secure_tsc(),
         suppress_svsm_interrupts,
         platform_type,
     };

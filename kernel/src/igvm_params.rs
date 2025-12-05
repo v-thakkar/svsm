@@ -459,6 +459,10 @@ impl IgvmParams<'_> {
         self.igvm_param_block.use_alternate_injection != 0
     }
 
+    pub fn use_secure_tsc(&self) -> bool {
+        self.igvm_param_block.use_secure_tsc != 0
+    }
+
     pub fn suppress_svsm_interrupts_on_snp(&self) -> bool {
         self.igvm_param_block.suppress_svsm_interrupts_on_snp != 0
     }

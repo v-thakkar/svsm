@@ -57,6 +57,7 @@ pub struct KernelLaunchInfo {
     pub vtom: u64,
     pub debug_serial_port: u16,
     pub use_alternate_injection: bool,
+    pub use_secure_tsc: bool,
     pub suppress_svsm_interrupts: bool,
     pub platform_type: SvsmPlatformType,
 }

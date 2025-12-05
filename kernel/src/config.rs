@@ -79,6 +79,10 @@ impl<'a> SvsmConfig<'a> {
         self.igvm_params.use_alternate_injection()
     }
 
+    pub fn use_secure_tsc(&self) -> bool {
+        self.igvm_params.use_secure_tsc()
+    }
+
     pub fn suppress_svsm_interrupts_on_snp(&self) -> bool {
         self.igvm_params.suppress_svsm_interrupts_on_snp()
     }

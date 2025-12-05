@@ -135,8 +135,8 @@ pub struct IgvmParamBlock {
     /// Indicates whether SVSM can use "IORequest"s to assist with testing.
     pub has_test_iorequests: u8,
 
-    #[doc(hidden)]
-    pub _reserved: [u8; 1],
+    /// Indicates whether SVSM should use SecureTSC.
+    pub use_secure_tsc: u8,
 
     /// Metadata containing information about the firmware image embedded in the
     /// IGVM file.
