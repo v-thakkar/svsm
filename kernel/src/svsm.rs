@@ -56,6 +56,7 @@ use svsm::svsm_paging::{
     enumerate_early_boot_regions, init_page_table, invalidate_early_boot_memory,
 };
 use svsm::task::{KernelThreadStartInfo, schedule_init, start_kernel_task};
+use svsm::time::init_monotonic_clock;
 use svsm::types::PAGE_SIZE;
 use svsm::utils::{MemoryRegion, ScopedRef, round_to_pages};
 #[cfg(all(feature = "virtio-drivers", feature = "block"))]
@@ -332,6 +333,8 @@ unsafe fn svsm_start(li: *const KernelLaunchInfo) -> Option<VirtAddr> {
     platform
         .configure_secure_tsc(launch_info.use_secure_tsc)
         .expect("Secure TSC required but not available");
+
+    init_monotonic_clock().expect("Failed to initialize monotonic clock");
 
     platform_cell.global_init();
 
